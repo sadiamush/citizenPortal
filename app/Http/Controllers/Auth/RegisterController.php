@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Citizen;
 use App\Models\Network;
 use App\Http\Controllers\Controller;
+use App\Models\CitizenDepartment;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Storage;
@@ -56,7 +57,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'cnic' => ['required', 'string', 'max:255'],
+            'cnic' => ['required', 'numeric'],
             'profession' => ['required', 'string', 'max:255'],
             'age' => ['required', 'numeric'],
             'address'=>['required', 'string', 'max:955'],
@@ -76,6 +77,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+// dd($data);
       $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -85,18 +88,26 @@ class RegisterController extends Controller
             "profession" => $data['profession'],
             "age" => $data['age'],
             "address" => $data['address'],
-            "profile_picture" => Storage::disk('public')->put('user',$data['profile_picture']),
+            "profile_picture" => Storage::disk('public')->put('user', $data['profile_picture']),
         ]);
 
+        if($data['role']=="Citizen")
+        {
+            $citizen = new Citizen;
+            $citizen->user_id = $user['id'];
+            $citizen->network_id = $data['city_name'];
+            $citizen->education_id = $data['education_id'];
+            $citizen->save();
 
+            foreach($data['department_id'] as $department)
+            {
+                $citizenDepartment = new CitizenDepartment;
+                $citizenDepartment->citizen_id = $citizen['id'];
+                $citizenDepartment->department_id = $department;
+                $citizenDepartment->save();
+            }
 
-
-        Citizen::create([
-           "user_id"=>$user['id'],
-           "network_id"=>$data['city_name'],
-           "department_id"=>$data['department_id'],
-           "education_id"=>$data['education_id'],
-        ]);
+        }
 
         return $user;
     }

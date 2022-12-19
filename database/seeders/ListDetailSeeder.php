@@ -130,34 +130,44 @@ class ListDetailSeeder extends Seeder
                 "id" => 19,
                 "list_name" => "Department",
                 "list_table" => "Local Body",
-                "list_value" => "Digital Marketing"
+                "list_value" => "Computer Science"
             ],
             [
                 "id" => 20,
                 "list_name" => "Department",
                 "list_table" => "Local Body",
-                "list_value" => "HR"
+                "list_value" => "Physics"
             ],
             [
                 "id" => 21,
                 "list_name" => "Department",
                 "list_table" => "Local Body",
-                "list_value" => "Developer"
+                "list_value" => "Textile Designer"
             ],
             [
                 "id" => 22,
                 "list_name" => "Department",
                 "list_table" => "Local Body",
-                "list_value" => "Graphic Designer"
+                "list_value" => "Architecture"
             ],
             [
                 "id" => 23,
                 "list_name" => "Department",
                 "list_table" => "Local Body",
-                "list_value" => "Networking"
+                "list_value" => "Pharmacy"
             ],
-
-
+            [
+                "id" => 24,
+                "list_name" => "Department",
+                "list_table" => "Local Body",
+                "list_value" => "Civil Engineer"
+            ],
+            [
+                "id" => 25,
+                "list_name" => "Department",
+                "list_table" => "Local Body",
+                "list_value" => "ADP"
+            ],
         ];
 
         foreach ($listDetail as $listDetail) {
