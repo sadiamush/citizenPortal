@@ -14,4 +14,9 @@ class Citizen extends Model
         'department_id',
         'education_id',
     ];
+
+    public function listDetails()
+    {
+        return $this->belongsToMany(ListDetail::class,'citizen_departments','citizen_id','department_id');
+    }
 }

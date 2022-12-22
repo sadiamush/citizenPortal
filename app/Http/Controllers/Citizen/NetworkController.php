@@ -51,7 +51,11 @@ class NetworkController extends Controller
                         ->withErrors($validator)
                         ->withInput();
         }else{
-            Network::create($request->all());
+            // Network::create($request->all());
+            $network = new Network;
+            $network->city_name = $request->city_name;
+            $network->state = $request->state;
+            $network->save();
             return redirect('network')->with('success','Network details is inserted successfully');
         }
     }

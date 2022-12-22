@@ -31,13 +31,27 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                {{-- <a class='btn btn-primary float-end' href="{{url('user/create')}}">Complete the Details</a> --}}
+               <form class="filterData">
+                <div class="row">
+                <h1>Filters</h1>
+                  <div class="col-md-4">
+                    <br/><br/><br/>
+                    <label for="">Sort By:</label>
+                    <select class="sortBy form-control" name="sortBy">
+                         <option value="">Select Sorting</option>
+                         <option value="asc" @if(!empty($_GET['sortBy'])) {{$_GET['sortBy'] == "asc" ? "selected" : ""}} @endif>Ascending</option>
+                         <option value="desc" @if(!empty($_GET['sortBy']))   {{$_GET['sortBy'] == "desc" ? "selected" : ""}} @endif>Descending</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 @if(session('success'))
                  <div class="alert alert-success">{{session('success')}}</div>
                 @endif
+
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -45,30 +59,15 @@
                     <th>Email</th>
                     <th>CNIC</th>
                     <th>Role</th>
+                    <th>Age</th>
                     <th>Picture</th>
                     <th>Action</th>
                   </tr>
                   </thead>
-                  <tbody>
-                    @foreach ($user as $user)
-                    <tr>
-                        <td>{{$user['name']}}</td>
-                        <td>{{$user['email']}}</td>
-                        <td>{{$user['cnic']}}</td>
-                        <td>{{$user['role']}}</td>
-                        <td><img width="50" height="50" src="{{asset('storage/'.$user['profile_picture'])}}">
-                        </td>
-                        <td>
-                          <a href="{{url('user/'.$user->id.'/edit')}}"><i class="far fa-edit"></i></a>
-                          <form action="{{ route('user.destroy', $user->id ) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                          <button type="submit" id="delete-user" class=" btn fa fa-trash text-danger" onclick="return confirm('Are you sure to delete this user?')"><i class="fas fa-trash-alt"></i></button>
-                          </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
+                  <tbody class="filter_user_details">
+                    @include('citizen.users.filterUsers')
+                  </tbody>
+              </table>
 
               </div>
               <!-- /.card-body -->
@@ -93,7 +92,27 @@
 <script>
 @endif --}}
 <script>
+$(document).ready(function () {
 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $(".sortBy").on("change", function(){
+      let sortBy = $('.sortBy').val();
+      $.ajax({
+        type: "POST",
+        url: "/filter-user",
+        data: {sortBy:sortBy},
+        success: function (response) {
+          $('.filter_user_details').html(response)
+        },error:function(){
+             alert('error')
+        }
+      });
+    });
+});
 </script>
 
 @endsection

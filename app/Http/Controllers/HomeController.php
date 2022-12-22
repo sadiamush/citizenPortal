@@ -25,18 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->role == 'Admin') {
-            $user = User::all();
-            return view('citizen.users.index')->with(['user'=>$user]);
-        }else if(auth()->user()->role == 'Citizen'){
-            $user = User::where('id',Auth::user()->id)->get();
-            return view('citizen.users.index')->with(['user'=>$user]);
-        }else if(auth()->user()->role == 'Organization'){
-            $user = User::where('id',Auth::user()->id)->get();
-            return view('citizen.users.index')->with(['user'=>$user]);
-        }else{
-            return view('citizen.users.index');
-        }
-
+        return view('dashboard');
     }
 }

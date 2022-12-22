@@ -54,29 +54,37 @@
                   </tr>
                   </thead>
                   <tbody>
-                    @if($citizen)
+                    @if($citizenDetails)
                     <?php $i=0; ?>
-                        @foreach ($citizen as $citizen)
+                    @foreach ($citizenDetails as $citizen)
                         <tr>
                             <td>{{++$i;}}</td>
                             <td>{{$citizen->name}}</td>
                             <td>{{$citizen->cnic}}</td>
-                            <td><img width="50" height="50" src="{{asset('storage/'.$citizen['profile_picture'])}}">
+                            <td><img width="50" height="50" src="{{asset('upload/'.$citizen['profile_picture'])}}">
                             <td>{{$citizen->state}}</td>
                             <td>{{$citizen->city_name}}</td>
                             <td>{{$citizen->address}}</td>
                             <td>{{$citizen->list_table}}</td>
-                            <td>{{$citizen->list_value}}</td>
                             <td>
-                              <a href="{{url('citizen/'.$citizen->id.'/edit')}}"><i class="far fa-edit"></i></a>
-                              <form action="{{ route('citizen.destroy', $citizen->id ) }}" method="post">
+                            @foreach($data as $datas)
+                              @foreach ($datas as $department)
+                                @if($citizen['citizenDetails_id'] == $department['citizen_id'] )
+                                    {{$department['list_value']}},<br/>
+                                @endif
+                              @endforeach
+                            @endforeach
+                          </td>
+                            <td>
+                              {{-- <a href="{{url('citizen/'.$citizen->user_id.'/edit')}}"><i class="far fa-edit"></i></a> --}}
+                              <form action="{{ route('citizen.destroy', $citizen->user_id ) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                               <button type="submit" class=" btn fa fa-trash text-danger" onclick="return confirm('Are you sure to delete this citizen?')"><i class="fas fa-trash-alt"></i></button>
                               </form>
                             </td>
                           </tr>
-                        @endforeach
+                          @endforeach
                     @endif
                 </table>
               </div>

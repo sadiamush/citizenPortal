@@ -77,9 +77,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
-// dd($data);
-      $user =  User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'role' => $data['role'],
@@ -88,7 +86,7 @@ class RegisterController extends Controller
             "profession" => $data['profession'],
             "age" => $data['age'],
             "address" => $data['address'],
-            "profile_picture" => Storage::disk('public')->put('user', $data['profile_picture']),
+            "profile_picture" => Storage::disk('public')->put('user',$data['crop_image_path']),
         ]);
 
         if($data['role']=="Citizen")

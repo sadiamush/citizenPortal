@@ -52,18 +52,20 @@ class LoginController extends Controller
 
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password'])))
         {
+            $user="";
             if (auth()->user()->role == 'Admin') {
                 $user = User::all();
-                return view('citizen.users.index')->with(['user'=>$user]);
-            }else if(auth()->user()->role == 'Citizen'){
-                $user = User::where('id',Auth::user()->id)->get();
-                return view('citizen.users.index')->with(['user'=>$user]);
-            }else if(auth()->user()->role == 'Organization'){
-                $user = User::where('id',Auth::user()->id)->get();
-                return view('citizen.users.index')->with(['user'=>$user]);
-            }else{
-                return view('citizen.users.index');
+
             }
+            if(auth()->user()->role == 'Citizen'){
+                $user = User::where('id',Auth::user()->id)->get();
+
+            }
+            if(auth()->user()->role == 'Organization'){
+                $user = User::where('id',Auth::user()->id)->get();
+
+            }
+            return view('citizen.users.index')->with(['user'=>$user]);
         }else{
             return redirect('login')
                 ->with('error','Email-Address And Password Are Wrong.');

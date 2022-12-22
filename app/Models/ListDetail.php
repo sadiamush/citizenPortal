@@ -14,4 +14,10 @@ class ListDetail extends Model
         'list_table',
         'list_value',
      ];
+
+     public function citizens()
+     {
+         return $this->belongsToMany(Citizen::class,'citizen_departments','citizen_id','department_id');
+     }
+
 }

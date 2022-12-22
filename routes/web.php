@@ -21,8 +21,10 @@ use App\Http\Controllers\Citizen\ListDetailController;
 Route::get('/', function () {
     return view('auth.login');
 });
-// Route::resource('citizen',CitizenController::class);
+Route::post('crop-image-upload', [UserController::class, 'uploadCropImage']);
+
 Route::middleware(['auth','admin'])->group(function () {
+    Route::post('filter-user',[UserController::class,'filterUser']);
     Route::resource('user',UserController::class);
     Route::resource('network',NetworkController::class);
     Route::resource('list',ListDetailController::class);

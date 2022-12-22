@@ -8,6 +8,7 @@ use App\Models\Network;
 use App\Models\ListDetail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\CitizenDepartment;
 
 class CitizenController extends Controller
 {
@@ -18,14 +19,21 @@ class CitizenController extends Controller
      */
     public function index()
     {
-       $citizen = User::join('citizens','users.id','=','citizens.user_id')
+        // dd(Citizen::with('listDetails')->get());
+       $citizenDetails = User::join('citizens','users.id','=','citizens.user_id')
                        ->join('networks','networks.id','=','citizens.network_id')
-                       ->join('list_details as department','department.id','=','citizens.department_id')
-                       ->join('list_details as education','education.id','=','citizens.education_id')
-                       ->select('users.*','education.list_table','department.list_value','networks.city_name','networks.state')
-                      ->where('users.role','Citizen')
+                       ->join('list_details','list_details.id','=','citizens.education_id')
+                       ->select('users.*','citizens.id as citizenDetails_id','citizens.user_id','citizens.network_id','citizens.education_id','networks.*','list_details.*')
+                       ->where('users.role','Citizen')
                        ->get();
-        return view('citizen.index',compact('citizen'));
+        $data = [];
+        foreach($citizenDetails as $citizen)
+        {
+            $data[] = CitizenDepartment::where('citizen_id',$citizen['citizenDetails_id'])
+            ->join('list_details','list_details.id','=','citizen_departments.department_id')
+            ->get();
+        }
+        return view('citizen.index',compact('citizenDetails','data'));
     }
 
     /**

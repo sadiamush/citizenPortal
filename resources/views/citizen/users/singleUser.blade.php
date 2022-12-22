@@ -29,13 +29,11 @@
                         <!-- general form elements -->
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Update User Details</h3>
+                                <h3 class="card-title">Single User Details</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form method='POST' action="{{ url('user/'.$singleUser['id']) }}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
+
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label>Name</label>
@@ -105,46 +103,14 @@
                                         <img id="preview-image-before-upload" src="{{asset('upload/'.$singleUser->profile_picture)}}"
                                         alt="preview image" width="250"><br/>
                                         <input type="file"
-                                            class="form-control image @error('profile_picture') is-invalid @enderror"
+                                            class="form-control @error('profile_picture') is-invalid @enderror"
                                             name="profile_picture" id="image">
                                         @error('profile_picture')
                                             <div class="alert alert-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" role="document">
-                                          <div class="modal-content">
-                                            <div class="modal-header">
-                                              <h5 class="modal-title" id="modalLabel">Laravel Cropper Js - Crop Image Before Upload - Tutsmake.com</h5>
-                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">×</span>
-                                              </button>
-                                            </div>
-                                            <div class="modal-body">
-                                              <div class="img-container">
-                                                  <div class="row">
-                                                      <div class="col-md-8">
-                                                          <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
-                                                      </div>
-                                                      <div class="col-md-4">
-                                                          <div class="preview"></div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                              <button type="button" class="btn btn-primary" id="crop">Crop</button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <input type="hidden" name="crop_image_path" id="crop_image_path" value=""/>
 
-                                    <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Update User</button>
-                                    </div>
-                            </form>
+
                         </div>
                     </div>
                     <!-- /.row -->
@@ -163,7 +129,7 @@ $('#image').change(function(){
     $('#preview-image-before-upload').attr('src', e.target.result);
     }
     reader.readAsDataURL(this.files[0]);
-});
+    });
 });
 </script>
 @endsection
